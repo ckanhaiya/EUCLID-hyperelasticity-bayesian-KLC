@@ -104,6 +104,8 @@ if feature_filter:
 
 params = Params(N = data.D.shape[0],
 				P = data.D.shape[1],
+
+				
 				a_v = a_v,
 				b_v = b_v,
 				a_p = a_p,
@@ -136,7 +138,14 @@ else:
 	fig_title = 'Benchmark: '+getFigTitle(fem_material)+', '+noise_level+' noise ($\sigma_u =0$)'
 
 os.makedirs(fig_dir,exist_ok=True)
-post_proc(chain, theta_gt, feature_filter, fem_material, predict_energy_path, fig_prefix+fig_title, fig_title2, fig_dir, plotting=True, interactive_job=interactive_job)
+
+theta = np.zeros((1,getNumberOfFeatures())).squeeze()
+theta[feature_filter] = np.mean(chain.theta,axis=0) #mean_theta
+std = np.std(chain.theta,axis=0)
+
+print("Mean Theta:", theta)
+print("Std Theta:", std)
+# post_proc(chain, theta_gt, feature_filter, fem_material, predict_energy_path, fig_prefix+fig_title, fig_title2, fig_dir, plotting=True, interactive_job=interactive_job)
 
 print('\n\n....... ending .......')
 
